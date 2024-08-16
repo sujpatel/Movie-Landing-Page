@@ -5,47 +5,13 @@ const UPCOMING_MOVIES_URL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&langu
 const TOP_MOVIES_URL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
 const PLAYING_MOVIES_URL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
 
-async function fetchPopularMovies() {
+async function fetchMovies(url, sectionId) {
     try {
-        const response = await fetch(POPULAR_MOVIES_URL);
+        const response = await fetch(url);
         const data = await response.json();
-        console.log(data.results);
-        displayMovies(data.results, 'popular');
+        displayMovies(data.results, sectionId);
     } catch (error) {
-        console.error('Error fetching popular movies: ', error);
-    }
-}
-
-async function fetchUpcomingMovies() {
-    try {
-        const response = await fetch(UPCOMING_MOVIES_URL);
-        const data = await response.json();
-        console.log(data.results);
-        displayMovies(data.results, 'upcoming');
-    } catch (error) {
-        console.error('Error fetching upcoming movies: ', error);
-    }
-}
-
-async function fetchTopRatedMovies() {
-    try {
-        const response = await fetch(TOP_MOVIES_URL);
-        const data = await response.json();
-        console.log(data.results);
-        displayMovies(data.results, 'top_rated');
-    } catch (error) {
-        console.error('Error fetching upcoming movies: ', error);
-    }
-}
-
-async function fetchPlayingMovies() {
-    try {
-        const response = await fetch(PLAYING_MOVIES_URL);
-        const data = await response.json();
-        console.log(data.results);
-        displayMovies(data.results, 'now_playing');
-    } catch (error) {
-        console.error('Error fetching upcoming movies: ', error);
+        console.error(`Error fetching movies for ${sectionId}: `, error);
     }
 }
 
@@ -60,18 +26,18 @@ function displayMovies(movies, sectionId) {
         movieItem.innerHTML = `<img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">`;
         movieRow.appendChild(movieItem);
     });
+
+    addMovieClickListener();
 }
 
-document.addEventListener('click', function (event) {
-    if (event.target.closest('.movie-item')) {
-        const movieId = event.target.closest('.movie-item').getAttribute('data-id');
-        fetchMovieDetails(movieId);
-    } else if (event.target.id === 'overlay' || event.target.classList.contains('close-btn')) {
-        document.getElementById('movie-details').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-
-});
+function addMovieClickListener() {
+    document.querySelectorAll('.movie-item').forEach(item => {
+        item.addEventListener('click', function () {
+            const movieId = this.getAttribute('data-id');
+            fetchMovieDetails(movieId);
+        });
+    });
+}
 
 async function fetchMovieDetails(movieId) {
     const MOVIE_DETAILS_URL = `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US`;
@@ -93,7 +59,11 @@ function displayMovieDetails(movie) {
     <p>${movie.overview}</p>
     <img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}">
     <p>Release Date: ${movie.release_date}</p>
-    <p>Rating: ${movie.vote_average}</p>`;
+    <p>Rating: ${movie.vote_average}</p>
+    <div class = "movie-links">
+    <a href="https://www.youtube.com/results?search_query=${movie.title}+trailer" target="_blank">Watch Trailer</a>
+    <a href="#" class="watch-link">Watch Movie</a>
+    </div>`
     detailsSection.style.display = 'block';
     overlay.style.display = 'block';
 
@@ -105,7 +75,8 @@ function displayMovieDetails(movie) {
 }
 
 
-fetchPopularMovies();
-fetchUpcomingMovies();
-fetchTopRatedMovies();
-fetchPlayingMovies();
+fetchMovies(POPULAR_MOVIES_URL, 'popular');
+fetchMovies(UPCOMING_MOVIES_URL, 'upcoming');
+fetchMovies(TOP_MOVIES_URL, 'top_rated');
+fetchMovies(PLAYING_MOVIES_URL, 'now_playing');
+

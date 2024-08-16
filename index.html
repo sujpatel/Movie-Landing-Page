@@ -10,51 +10,56 @@
 
 <body>
     <header>
-        <h1>Welcome to MovieMania</h1>
+        <div class="logo">
+            <h1>Welcome to MovieMania</h1>
+        </div>
         <nav>
             <ul>
                 <li><a href="#popular">Popular Movies</a></li>
                 <li><a href="#upcoming">Upcoming Releases</a></li>
-                <li><a href="#search">Search</a></li>
+                <li><a href="#top_rated">Top Rated</a></li>
+                <li><a href="#now_playing">Now Playing</a></li>
             </ul>
         </nav>
     </header>
-    <main id="content">
+    <main id=" content">
+
+        <section id="hero">
+            <h2>Welcome to MovieMania</h2>
+            <p>Your ultimate one-stop spot to explore the latest and greatest movies!</p>
+        </section>
+
         <section id="popular" class="movie-section">
             <h2>Popular Movies</h2>
-            <div class="movie-row">
-
-            </div>
+            <div class="movie-row"></div>
         </section>
 
         <section id="upcoming" class="movie-section">
             <h2>Upcoming Releases</h2>
-            <div class="movie-row">
-
-            </div>
+            <div class="movie-row"></div>
         </section>
 
         <section id="top_rated" class="movie-section">
             <h2>Top Rated</h2>
-            <div class="movie-row">
-
-            </div>
+            <div class="movie-row"></div>
         </section>
 
         <section id="now_playing" class="movie-section">
             <h2>Now Playing</h2>
-            <div class="movie-row">
-
-            </div>
+            <div class="movie-row"></div>
         </section>
 
-        <div id="movie-details" style="display: none;">
+        <div id="movie-details" class="modal">
 
         </div>
-
-        <div id="overlay" class="overlay" style="display: none;"></div>
+        <div id="overlay" class="overlay"></div>
 
     </main>
+
+    <footer>
+        <p>© 2024 MovieMania. All rights reserved.</p>
+    </footer>
+
     <script src="app.js"></script>
 </body>
 
